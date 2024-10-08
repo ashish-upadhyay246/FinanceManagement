@@ -50,7 +50,17 @@ public class FinanceApp {
                             case 1:
                             	//add an expense
                             	System.out.println("Enter userId, amount, categoryId, date (yyyy-mm-dd), description:");
-                                Expense ex = new Expense(sc.nextInt(),0, sc.nextDouble(), sc.nextInt(), java.sql.Date.valueOf(sc.next()), sc.next());
+                            	int usID=sc.nextInt();
+                            	sc.nextLine();
+                            	double amnt=sc.nextDouble();
+                            	sc.nextLine();
+                            	int cID=sc.nextInt();
+                            	sc.nextLine();
+                            	java.sql.Date dte=java.sql.Date.valueOf(sc.next());
+                            	sc.nextLine();
+                            	String d=sc.nextLine();
+                            	
+                            	Expense ex = new Expense(usID,0, amnt, cID, dte, d);
                                 fr.createExpense(ex);
                                 System.out.print("Expense Created!");
                                 break;
@@ -100,7 +110,8 @@ public class FinanceApp {
                             case 4:
                             	//show all expenses for a certain userID
                             	System.out.println("Enter your userId to view all expenses:");
-                            	int uID = sc.nextInt();                            	
+                            	int uID = sc.nextInt();
+                            	sc.nextLine();
                                 List<Expense> exps = fr.getAllExpenses(uID);
                                 if (exps.isEmpty()) 
                                 {
