@@ -1,6 +1,7 @@
 package main;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.lang.Exception;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import src.dao.FinanceRepositoryImpl;
@@ -13,32 +14,39 @@ import src.util.DBConnUtil;
 
 class exception_test {
 
-    private FinanceRepositoryImpl financeRepository;
+    private FinanceRepositoryImpl repo;
     private Connection conn;
 
     @BeforeEach
     void setUp() {
-        // Set up database connection and repository
         conn = DBConnUtil.getConnection("db.properties");
-        financeRepository = new FinanceRepositoryImpl(conn);
+        repo = new FinanceRepositoryImpl(conn);
     }
 
     @Test
     void testDeleteUser_ThrowsUserNotFoundException() {
-        int nonExistentUserId = 9999; // Assume this user ID doesn't exist
-        assertThrows(UserNotFoundException.class, () -> financeRepository.deleteUser(nonExistentUserId));
+        int user_id = 9999;
+        Exception exception = assertThrows(UserNotFoundException.class, () -> repo.deleteUser(user_id));
+        assertEquals("User with ID " + user_id + " does not exist.", exception.getMessage());
+        System.out.println(exception.getMessage());
     }
 
     @Test
     void testDeleteExpense_ThrowsExpenseNotFoundException() {
-        int nonExistentExpenseId = 9999; // Assume this expense ID doesn't exist
-        assertThrows(ExpenseNotFoundException.class, () -> financeRepository.deleteExpense(nonExistentExpenseId));
+        int expense_id = 9999;
+        Exception exception = assertThrows(ExpenseNotFoundException.class, () -> repo.deleteExpense(expense_id));
+        assertEquals("Expense with ID " + expense_id + " does not exist.", exception.getMessage());
+        System.out.println(exception.getMessage());
     }
 
     @Test
     void testUpdateExpense_ThrowsExpenseNotFoundException() {
-        Expense nonExistentExpense = new Expense(1, 9999, 200.0, 3, new java.util.Date(), "Updated Description");
-        assertThrows(ExpenseNotFoundException.class, () -> financeRepository.updateExpense(nonExistentExpense));
+    	int expense_id =9999;
+        Expense expense_obj = new Expense(1, expense_id, 200.0, 3, new java.util.Date(), "Updated Description");
+        Exception exception =  assertThrows(ExpenseNotFoundException.class, () -> repo.updateExpense(expense_obj));
+        assertEquals("Expense with ID " + expense_id + " does not exist.", exception.getMessage());
+        System.out.println(exception.getMessage());
+        
     }
 
     
